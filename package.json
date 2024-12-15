@@ -1,0 +1,62 @@
+{
+  "name": "@cap-rp/notifications",
+  "version": "0.0.3",
+  "description": "CDS plugin providing integration to the SAP BTP Alert Notification Service.",
+  "repository": "rohtash/notifications",
+  "author": "SAP SE (https://www.sap.com)",
+  "homepage": "https://cap.cloud.sap/",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "cds-plugin.js",
+  "files": [
+    "lib",
+    "srv"
+  ],
+  "peerDependencies": {
+    "@sap/cds": ">=8"
+  },
+  "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.13.0",
+    "@sap-cloud-sdk/http-client": "^3.13.0",
+    "@sap-cloud-sdk/util": "^3.13.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "chai": "^4.3.10",
+    "@sap/cds": ">=8",
+    "@sap/cds-dk": ">=8"
+  },
+  "scripts": {
+    "lint": "npx eslint .",
+    "test": "npx jest",
+    "test-with-coverage": "npx jest --coverage"
+  },
+  "cds": {
+    "requires": {
+      "destinations": true,
+      "notifications": {
+        "[development]": {
+          "kind": "notify-to-console"
+        },
+        "[hybrid]": {
+          "destination": "SAP_Notifications",
+          "kind": "notify-to-rest"
+        },
+        "[production]": {
+          "destination": "SAP_Notifications",
+          "kind": "notify-to-rest"
+        },
+        "prefix": "$app-name",
+        "types": "srv/notification-types.json",
+        "outbox": true
+      },
+      "kinds": {
+        "notify-to-console": {
+          "impl": "@cap-rp/notifications/srv/notifyToConsole"
+        },
+        "notify-to-rest": {
+          "impl": "@cap-rp/notifications/srv/notifyToRest"
+        }
+      }
+    }
+  }
+}
